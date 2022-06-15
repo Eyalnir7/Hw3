@@ -46,7 +46,6 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
         }
 
         E x = arr[front];
-
         front = (front + 1) % capacity;
         count--;
         return x;
