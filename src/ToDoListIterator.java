@@ -37,7 +37,6 @@ public class ToDoListIterator implements Iterator<Task> {
 
     @Override
     public Task next() {
-        cursor++;
-        return taskList.get(cursor);
+        return taskList.get(cursor++);
     }
 }
