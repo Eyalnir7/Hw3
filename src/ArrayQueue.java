@@ -3,7 +3,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class ArrayQueue<E extends Cloneable> implements Queue<E>{
-    private final Cloneable[] arr;      // array to store queue elements
+    private Cloneable[] arr;      // array to store queue elements
     private int front;      // front points to the front element in the queue
     private int rear;       // rear points to the last element in the queue
     private int capacity;   // maximum capacity of the queue
@@ -20,6 +20,14 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
         front = 0;
         rear = -1;
         count = 0;
+    }
+
+    public Cloneable[] getArr() {
+        return arr;
+    }
+
+    public void setArr(Cloneable[] arr) {
+        this.arr = arr;
     }
 
     @Override
@@ -75,22 +83,28 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
 
         ArrayQueue<E> cloned;
         E temp;
+        Cloneable[] arrayCopy = new Cloneable[this.capacity];
         try {
             cloned = (ArrayQueue<E>) super.clone();
         }catch(CloneNotSupportedException e){
             return null;
         }
 
-        for(int i = 0; i < count; i++)
+        for(int i = 0; i < capacity; i++)
         {
             try{
-                temp = cloned.dequeue();
-                Method m = temp.getClass().getMethod("clone");
-                cloned.enqueue((E) m.invoke(temp));
+                temp = (E) arr[i];
+                if(temp == null) {
+                    arrayCopy[i] = null;
+                }else {
+                    Method m = temp.getClass().getMethod("clone");
+                    arrayCopy[i] = ((E) m.invoke(temp));
+                }
             }catch(Exception e){
-                System.out.println(e);
+                return null;
             }
         }
+        cloned.setArr(arrayCopy);
         return cloned;
     }
 
