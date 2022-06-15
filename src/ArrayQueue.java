@@ -1,6 +1,6 @@
 import java.lang.reflect.Method;
 import java.util.Iterator;
-import java.util.Queue;
+import java.util.NoSuchElementException;
 
 public class ArrayQueue<E extends Cloneable> implements Queue<E>{
     private E[] arr;      // array to store queue elements
@@ -26,11 +26,13 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
             //do something later
         }
 
-        System.out.println("Inserting " + item);
-
         rear = (rear + 1) % capacity;
-        arr[rear] = item;
+        arr[rear] = element;
         count++;
+    }
+
+    public boolean isFull() {
+        return count==capacity;
     }
 
     @Override
@@ -41,9 +43,6 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
         }
 
         E x = arr[front];
-
-        System.out.println("Removing " + x);
-
         front = (front + 1) % capacity;
         count--;
         return x;
@@ -83,24 +82,29 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
 
     @Override
     public Iterator<E> iterator() {
-        return new QItr();
+        return new ArrayQueueIterator(this);
     }
 
-    private class QItr implements Iterator<E>{
+    private class ArrayQueueIterator implements Iterator<E>{
 
-        private Queue<E> queue;
+        private final ArrayQueue<E> queue;
+        private int front;
 
-        public QItr(Queue<E> queue){
+        public ArrayQueueIterator(ArrayQueue<E> queue){
             this.queue = queue;
+            this.front = queue.front;
         }
         @Override
         public boolean hasNext() {
-            return false;
+            return front != queue.rear;
         }
 
         @Override
-        public E next() {
-            return null;
+        public E next() throws NoSuchElementException {
+            if(!hasNext()) throw new NoSuchElementException();
+            E element = queue.peek();
+            front = (front+1)%capacity;
+            return element;
         }
     }
 }
