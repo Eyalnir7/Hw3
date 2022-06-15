@@ -2,6 +2,10 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * array implementation of queue
+ * @param <E> the type of elements held in this collection
+ */
 public class ArrayQueue<E extends Cloneable> implements Queue<E>{
     private Cloneable[] arr;      // array to store queue elements
     private int front;      // front points to the front element in the queue
@@ -9,7 +13,6 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
     private int capacity;   // maximum capacity of the queue
     private int count;      // current size of the queue
 
-    // Constructor to initialize a queue
     public ArrayQueue(int size)
     {
         if(size<0){
@@ -30,13 +33,15 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
         this.arr = arr;
     }
 
+    /**
+     * add an element to the end of the queue
+     * @param element the element we want to add to the queue
+     */
     @Override
     public void enqueue(E element){
-        if (isFull())
-        {
+        if (isFull()) {
             throw new QueueOverflowException();
         }
-
         rear = (rear + 1) % capacity;
         arr[rear] = element;
         count++;
@@ -46,6 +51,10 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
         return count==capacity;
     }
 
+    /**
+     * remove the element in the start of the queue
+     * @return the element in the start of the queue
+     */
     @Override
     public E dequeue() {
         if (isEmpty())
@@ -59,6 +68,10 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
         return x;
     }
 
+    /**
+     * shows the element in the start of the queue
+     * @return the element in the start of the queue
+     */
     @Override
     public E peek() {
         if (isEmpty())
@@ -78,9 +91,11 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
         return (size() == 0);
     }
 
+    /**
+     * @return deep copy
+     */
     @Override
     public ArrayQueue<E> clone() {
-
         ArrayQueue<E> cloned;
         E temp;
         Cloneable[] arrayCopy = new Cloneable[this.capacity];
