@@ -1,8 +1,15 @@
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Objects;
 
-public class ToDoList {
+public class ToDoList implements TaskIterable{
     private ArrayList<Task> taskList;
+    private Date maxDate;
+
+    public Date getMaxDate() {
+        return maxDate;
+    }
 
     public ToDoList(){
         taskList = new ArrayList<Task>();
@@ -10,10 +17,6 @@ public class ToDoList {
 
     public ArrayList<Task> getTaskList() {
         return taskList;
-    }
-
-    public void setTaskList(ArrayList<Task> taskList) {
-        this.taskList = taskList;
     }
 
     private boolean exists(Task task){
@@ -84,5 +87,15 @@ public class ToDoList {
             hash += element.hashCode();
         }
         return Objects.hash(taskList);
+    }
+
+    @Override
+    public void setScanningDueDate(Date date) {
+        maxDate = date;
+    }
+
+    @Override
+    public Iterator<Task> iterator() {
+        return null;
     }
 }
