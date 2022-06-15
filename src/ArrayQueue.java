@@ -12,6 +12,9 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
     // Constructor to initialize a queue
     ArrayQueue(int size)
     {
+        if(size<0){
+            throw new NegativeCapacityException();
+        }
         arr =  (E[]) new Object[size];
         capacity = size;
         front = 0;
@@ -23,7 +26,7 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
     public void enqueue(E element){
         if (isFull())
         {
-            //do something later
+            throw new QueueOverflowException();
         }
 
         rear = (rear + 1) % capacity;
@@ -39,10 +42,11 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
     public E dequeue() {
         if (isEmpty())
         {
-            //do something later
+            throw new EmptyQueueException();
         }
 
         E x = arr[front];
+
         front = (front + 1) % capacity;
         count--;
         return x;
@@ -52,7 +56,7 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
     public E peek() {
         if (isEmpty())
         {
-            //do something later
+            throw new EmptyQueueException();
         }
         return arr[front];
     }
@@ -69,15 +73,20 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
 
     @Override
     public Queue<E> clone() {
-        E[] cloned = arr.clone();
-        try {
-            Method m = Object.class.getMethod("clone");
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        ArrayQueue<E> cloned = new ArrayQueue<E>(size());
         for(E element : arr){
+            try {
+                Method m = Object.class.getMethod("clone");
+                cloned.enqueue((E) m.invoke(element));
+            } catch (Exception e) {
 
+            }
         }
+        return cloned;
+    }
+
+    private boolean isFull(){
+        return (capacity == size());
     }
 
     @Override
