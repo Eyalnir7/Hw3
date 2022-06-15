@@ -75,6 +75,7 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
 
         ArrayQueue<E> cloned;
         E temp;
+        Method cloneMethod;
         try {
             cloned = (ArrayQueue<E>) super.clone();
         }catch(CloneNotSupportedException e){
@@ -85,10 +86,10 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
         {
             try{
                 temp = cloned.dequeue();
-                Method m = temp.getClass().getMethod("clone");
-                cloned.enqueue((E) m.invoke(temp));
+                cloneMethod = temp.getClass().getMethod("clone");
+                cloned.enqueue((E) cloneMethod.invoke(temp));
             }catch(Exception e){
-                System.out.println(e);
+                return null;
             }
         }
         return cloned;

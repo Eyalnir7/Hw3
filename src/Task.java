@@ -41,7 +41,7 @@ public class Task implements Cloneable{
 
     @Override
     public String toString(){
-        return "(" + description + ", " + dueDate + ")";
+        return "(" + description + ", "  + ")";
     }
 
     @Override
