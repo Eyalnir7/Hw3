@@ -43,8 +43,8 @@ public class Task implements Cloneable{
 
     @Override
     public String toString(){
-        DateFormat formatter = new SimpleDateFormat("dd:MM:yyyy");
-        return "(" + description + ", " + formatter.format(dueDate) + ")";
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        return description + ", " + formatter.format(dueDate);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class ToDoList implements TaskIterable, Cloneable{
     public String toString(){
         String str = "[";
         for(Task element: taskList){
-            str += element.toString() + ", ";
+            str += "(" + element.toString() + "), ";
         }
         str = str.substring(0, str.length() - 2);
         return str + "]";
@@ -74,6 +74,7 @@ public class ToDoList implements TaskIterable, Cloneable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ToDoList toDoList = (ToDoList) o;
+        if(toDoList.getTaskList().size() != this.taskList.size()) return false;
         for(Task element: toDoList)
         {
             if(!exists(element))
