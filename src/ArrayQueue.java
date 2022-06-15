@@ -9,6 +9,8 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
     private int capacity;   // maximum capacity of the queue
     private int count;      // current size of the queue
 
+    private int noder;
+
     // Constructor to initialize a queue
     ArrayQueue(int size)
     {
