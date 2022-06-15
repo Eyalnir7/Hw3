@@ -67,14 +67,21 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
     }
 
     @Override
-    public Queue<E> clone() {
-        ArrayQueue<E> cloned = new ArrayQueue<E>(size());
-        for(E element : arr){
-            try {
-                Method m = Object.class.getMethod("clone");
-                cloned.enqueue((E) m.invoke(element));
-            } catch (Exception e) {
+    public Queue<E> clone(){
+        ArrayQueue<E> cloned;
+        try {
+            cloned = (ArrayQueue<E>) super.clone();
+        }catch(CloneNotSupportedException e){
+            return null;
+        }
 
+        for(int i = 0; i < count; i++)
+        {
+            try{
+                Method m = Object.class.getMethod("clone");
+                cloned.enqueue((E) m.invoke(cloned.dequeue()))
+            }catch(Exception e){
+                return null;
             }
         }
         return cloned;
