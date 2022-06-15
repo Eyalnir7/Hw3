@@ -22,8 +22,6 @@ public class ToDoList {
         taskList.add(task);
     }
 
-
-
     @Override
     public String toString(){
         String str = "[";
