@@ -3,19 +3,19 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class ArrayQueue<E extends Cloneable> implements Queue<E>{
-    private E[] arr;      // array to store queue elements
+    private final Cloneable[] arr;      // array to store queue elements
     private int front;      // front points to the front element in the queue
     private int rear;       // rear points to the last element in the queue
     private int capacity;   // maximum capacity of the queue
     private int count;      // current size of the queue
 
     // Constructor to initialize a queue
-    ArrayQueue(int size)
+    public ArrayQueue(int size)
     {
         if(size<0){
             throw new NegativeCapacityException();
         }
-        arr =  (E[]) new Object[size];
+        arr = new Cloneable[size];
         capacity = size;
         front = 0;
         rear = -1;
@@ -45,7 +45,7 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
             throw new EmptyQueueException();
         }
 
-        E x = arr[front];
+        E x = (E)arr[front];
         front = (front + 1) % capacity;
         count--;
         return x;
@@ -57,7 +57,7 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
         {
             throw new EmptyQueueException();
         }
-        return arr[front];
+        return (E)arr[front];
     }
 
     @Override
@@ -74,6 +74,7 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
     public ArrayQueue<E> clone() {
 
         ArrayQueue<E> cloned;
+        E temp;
         try {
             cloned = (ArrayQueue<E>) super.clone();
         }catch(CloneNotSupportedException e){
@@ -83,10 +84,11 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
         for(int i = 0; i < count; i++)
         {
             try{
-                Method m = Object.class.getMethod("clone");
-                cloned.enqueue((E) m.invoke(cloned.dequeue()));
+                temp = cloned.dequeue();
+                Method m = temp.getClass().getMethod("clone");
+                cloned.enqueue((E) m.invoke(temp));
             }catch(Exception e){
-                return null;
+                System.out.println(e);
             }
         }
         return cloned;
@@ -100,22 +102,19 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
     private class ArrayQueueIterator implements Iterator<E>{
 
         private final ArrayQueue<E> queue;
-        private int front;
 
         public ArrayQueueIterator(ArrayQueue<E> queue){
-            this.queue = queue;
-            this.front = queue.front;
+            this.queue = queue.clone();
         }
         @Override
         public boolean hasNext() {
-            return front != queue.rear;
+            return !queue.isEmpty();
         }
 
         @Override
         public E next() throws NoSuchElementException {
             if(!hasNext()) throw new NoSuchElementException();
-            E element = queue.peek();
-            front = (front+1)%capacity;
+            E element = (E)queue.dequeue();
             return element;
         }
     }
