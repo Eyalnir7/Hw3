@@ -84,10 +84,6 @@ public class ArrayQueue<E extends Cloneable> implements Queue<E>{
         return cloned;
     }
 
-    private boolean isFull(){
-        return (capacity == size());
-    }
-
     @Override
     public Iterator<E> iterator() {
         return new ArrayQueueIterator(this);
