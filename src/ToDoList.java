@@ -3,6 +3,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Objects;
 
+/**
+ * The todolist organizes the tasks the user has
+ */
 public class ToDoList implements TaskIterable, Cloneable{
     private ArrayList<Task> taskList;
     private Date maxDate;
@@ -19,6 +22,11 @@ public class ToDoList implements TaskIterable, Cloneable{
         return taskList;
     }
 
+    /**
+     * Checks if the task already exists in the task list
+     * @param task    the task to check
+     * @return     whether the given task exists in the task list
+     */
     private boolean exists(Task task){
         for(Task element: taskList){
             if(task.equals(element))
@@ -27,6 +35,11 @@ public class ToDoList implements TaskIterable, Cloneable{
         return false;
     }
 
+    /**
+     * Adds a task to the task list if another task with the same description doesn't already exist
+     * @param task    the task to insert
+     * @throws TaskAlreadyExistsException  an exception that's caused because the task already exists
+     */
     public void addTask(Task task) throws TaskAlreadyExistsException{
         for(Task element : taskList){
             if(Objects.equals(element.getDescription(), task.getDescription())){
@@ -50,6 +63,10 @@ public class ToDoList implements TaskIterable, Cloneable{
         this.taskList = taskList;
     }
 
+    /**
+     * Creates a deep clone
+     * @return deep copy of the task
+     */
     @Override
     public ToDoList clone(){
         ToDoList cloned;

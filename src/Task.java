@@ -3,6 +3,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Every task has a due date and a description
+ */
 public class Task implements Cloneable{
     private String description;
     private Date dueDate;
@@ -47,6 +50,10 @@ public class Task implements Cloneable{
         return description + ", " + formatter.format(dueDate);
     }
 
+    /**
+     * Creates a deep clone
+     * @return deep copy of the task
+     */
     @Override
     public Task clone(){
         return new Task(description, dueDate);
