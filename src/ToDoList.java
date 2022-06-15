@@ -3,7 +3,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class ToDoList implements TaskIterable{
+public class ToDoList implements TaskIterable, Cloneable{
     private ArrayList<Task> taskList;
     private Date maxDate;
 
@@ -30,7 +30,7 @@ public class ToDoList implements TaskIterable{
     public void addTask(Task task) throws TaskAlreadyExistsException{
         boolean descriptionExists = false;
         for(Task element : taskList){
-            if(element.getDescription() == task.getDescription()){
+            if(Objects.equals(element.getDescription(), task.getDescription())){
                 descriptionExists = true;
                 break;
             }
@@ -49,6 +49,10 @@ public class ToDoList implements TaskIterable{
         return str + "]";
     }
 
+    public void setTaskList(ArrayList<Task> taskList) {
+        this.taskList = taskList;
+    }
+
     @Override
     public ToDoList clone(){
         ToDoList cloned;
@@ -57,6 +61,7 @@ public class ToDoList implements TaskIterable{
         }catch(CloneNotSupportedException e){
             return null;
         }
+        cloned.setTaskList(new ArrayList<Task>());
         for(Task element: taskList){
             try {
                 cloned.addTask(element.clone());
@@ -96,6 +101,6 @@ public class ToDoList implements TaskIterable{
 
     @Override
     public Iterator<Task> iterator() {
-        return null;
+        return new ToDoListIterator(this);
     }
 }

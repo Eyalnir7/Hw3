@@ -16,6 +16,7 @@ public class ToDoListIterator implements Iterator<Task> {
         }
     }
 
+
     private void sortTaskList(){
         Comparator<Task> compareByDate = Comparator.comparing(Task::getDueDate);
         Comparator<Task> compareByABC = Comparator.comparing(Task::getDescription);
