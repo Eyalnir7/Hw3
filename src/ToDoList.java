@@ -1,8 +1,12 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
+import java.util.*;
 
 public class ToDoList {
     private ArrayList<Task> taskList;
+
 
     public ToDoList(){
         taskList = new ArrayList<Task>();
@@ -35,6 +39,10 @@ public class ToDoList {
         if(descriptionExists)
             throw new TaskAlreadyExistsException();
         taskList.add(task);
+        Comparator<Task> compareByDate = Comparator.comparing(Task::getDueDate);
+        Comparator<Task> compareByABC = Comparator.comparing(Task::getDescription);
+        Comparator<Task> compareByRules = compareByDate.thenComparing(compareByABC);
+        Collections.sort(AlgebrosTaskList, compareByRules);
     }
 
 
@@ -43,8 +51,9 @@ public class ToDoList {
     public String toString(){
         String str = "[";
         for(Task element: taskList){
-            str += element.toString();
+            str += element.toString() + ", ";
         }
+        str = str.substring(0, str.length() - 2);
         return str + "]";
     }
 
@@ -87,4 +96,6 @@ public class ToDoList {
         }
         return Objects.hash(taskList);
     }
+
+
 }
