@@ -1,12 +1,15 @@
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Objects;
-import java.util.*;
 
-public class ToDoList {
+public class ToDoList implements TaskIterable, Cloneable{
     private ArrayList<Task> taskList;
+    private Date maxDate;
 
+    public Date getMaxDate() {
+        return maxDate;
+    }
 
     public ToDoList(){
         taskList = new ArrayList<Task>();
@@ -14,10 +17,6 @@ public class ToDoList {
 
     public ArrayList<Task> getTaskList() {
         return taskList;
-    }
-
-    public void setTaskList(ArrayList<Task> taskList) {
-        this.taskList = taskList;
     }
 
     private boolean exists(Task task){
@@ -31,7 +30,7 @@ public class ToDoList {
     public void addTask(Task task) throws TaskAlreadyExistsException{
         boolean descriptionExists = false;
         for(Task element : taskList){
-            if(element.getDescription() == task.getDescription()){
+            if(Objects.equals(element.getDescription(), task.getDescription())){
                 descriptionExists = true;
                 break;
             }
@@ -39,22 +38,19 @@ public class ToDoList {
         if(descriptionExists)
             throw new TaskAlreadyExistsException();
         taskList.add(task);
-        Comparator<Task> compareByDate = Comparator.comparing(Task::getDueDate);
-        Comparator<Task> compareByABC = Comparator.comparing(Task::getDescription);
-        Comparator<Task> compareByRules = compareByDate.thenComparing(compareByABC);
-        Collections.sort(AlgebrosTaskList, compareByRules);
     }
-
-
 
     @Override
     public String toString(){
         String str = "[";
         for(Task element: taskList){
-            str += element.toString() + ", ";
+            str += element.toString();
         }
-        str = str.substring(0, str.length() - 2);
         return str + "]";
+    }
+
+    public void setTaskList(ArrayList<Task> taskList) {
+        this.taskList = taskList;
     }
 
     @Override
@@ -65,6 +61,7 @@ public class ToDoList {
         }catch(CloneNotSupportedException e){
             return null;
         }
+        cloned.setTaskList(new ArrayList<Task>());
         for(Task element: taskList){
             try {
                 cloned.addTask(element.clone());
@@ -97,5 +94,13 @@ public class ToDoList {
         return Objects.hash(taskList);
     }
 
+    @Override
+    public void setScanningDueDate(Date date) {
+        maxDate = date;
+    }
 
+    @Override
+    public Iterator<Task> iterator() {
+        return new ToDoListIterator(this);
+    }
 }
