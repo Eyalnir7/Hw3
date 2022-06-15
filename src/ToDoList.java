@@ -8,6 +8,14 @@ public class ToDoList {
         taskList = new ArrayList<Task>();
     }
 
+    public ArrayList<Task> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(ArrayList<Task> taskList) {
+        this.taskList = taskList;
+    }
+
     private boolean exists(Task task){
         for(Task element: taskList){
             if(task.equals(element))
@@ -17,7 +25,14 @@ public class ToDoList {
     }
 
     public void addTask(Task task) throws TaskAlreadyExistsException{
-        if(exists(task))
+        boolean descriptionExists = false;
+        for(Task element : taskList){
+            if(element.getDescription() == task.getDescription()){
+                descriptionExists = true;
+                break;
+            }
+        }
+        if(descriptionExists)
             throw new TaskAlreadyExistsException();
         taskList.add(task);
     }
