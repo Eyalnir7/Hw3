@@ -14,7 +14,7 @@ public class ToDoList {
         return false;
     }
 
-    public void AddTask(Task task){
+    public void addTask(Task task){
         if(exists(task))
             //throw exception
         taskList.add(task);

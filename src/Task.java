@@ -46,6 +46,13 @@ public class Task implements Cloneable{
 
     @Override
     public Task clone(){
-        return new Task(description, dueDate);
+        Task cloned;
+        try {
+            cloned = (Task)super.clone();
+            cloned.setDueDate(new Date(dueDate.getTime()));
+        }catch(CloneNotSupportedException e){
+            return null;
+        }
+        return cloned;
     }
 }
