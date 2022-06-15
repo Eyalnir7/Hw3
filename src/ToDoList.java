@@ -24,8 +24,8 @@ public class ToDoList implements TaskIterable, Cloneable{
 
     /**
      * Checks if the task already exists in the task list
-     * @param task    the task to check
-     * @return     whether the given task exists in the task list
+     * @param task the task to check
+     * @return whether the given task exists in the task list
      */
     private boolean exists(Task task){
         for(Task element: taskList){
