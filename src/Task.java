@@ -1,3 +1,5 @@
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -41,7 +43,8 @@ public class Task implements Cloneable{
 
     @Override
     public String toString(){
-        return "(" + description + ", "  + ")";
+        DateFormat formatter = new SimpleDateFormat("dd:MM:yyyy");
+        return "(" + description + ", " + formatter.format(dueDate) + ")";
     }
 
     @Override
