@@ -28,15 +28,11 @@ public class ToDoList implements TaskIterable, Cloneable{
     }
 
     public void addTask(Task task) throws TaskAlreadyExistsException{
-        boolean descriptionExists = false;
         for(Task element : taskList){
             if(Objects.equals(element.getDescription(), task.getDescription())){
-                descriptionExists = true;
-                break;
+                throw new TaskAlreadyExistsException();
             }
         }
-        if(descriptionExists)
-            throw new TaskAlreadyExistsException();
         taskList.add(task);
     }
 
@@ -44,8 +40,9 @@ public class ToDoList implements TaskIterable, Cloneable{
     public String toString(){
         String str = "[";
         for(Task element: taskList){
-            str += element.toString();
+            str += element.toString() + ", ";
         }
+        str = str.substring(0, str.length() - 2);
         return str + "]";
     }
 
